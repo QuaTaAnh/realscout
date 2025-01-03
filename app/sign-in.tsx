@@ -1,17 +1,32 @@
 import icons from "@/constants/icons";
 import images from "@/constants/images";
 import { login } from "@/lib/appwrite";
+import { useGlobalContext } from "@/lib/context";
+import { Redirect } from "expo-router";
 import React from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const SignIn = () => {
+  const { refetch, loading, isLogged } = useGlobalContext();
+
+  if (!loading && isLogged) return <Redirect href="/" />;
+
   const handleLogin = async () => {
     const result = await login();
+
     if (result) {
-      console.log(result, "Login success");
+      console.log("refetch");
+      refetch();
     } else {
-      console.log("Login failed");
+      Alert.alert("Error", "Failed to login");
     }
   };
 
@@ -53,7 +68,7 @@ const SignIn = () => {
                 resizeMode="contain"
               />
               <Text className="text-lg font-rubik text-black-300 ml-4">
-                Đăng nhập bằng Google
+                Sign Up with Google
               </Text>
             </View>
           </TouchableOpacity>
