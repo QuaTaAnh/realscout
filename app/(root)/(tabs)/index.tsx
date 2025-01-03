@@ -12,7 +12,7 @@ export default function Index() {
       <View className="flex flex-row justify-between items-center mt-5">
         <View className="flex flex-row">
           <Image
-            source={{ uri: user?.avatar }}
+            source={{ uri: user?.avatar, cache: "force-cache" }}
             className="size-12 rounded-full"
           />
           <View className="flex flex-col justify-center items-start ml-2">

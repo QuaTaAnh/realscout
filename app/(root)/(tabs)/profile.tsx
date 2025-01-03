@@ -3,6 +3,7 @@ import { settings } from "@/constants/data";
 import icons from "@/constants/icons";
 import { logout } from "@/lib/appwrite";
 import { useGlobalContext } from "@/lib/context";
+import { router } from "expo-router";
 import React from "react";
 import {
   Alert,
@@ -17,7 +18,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const Profile = () => {
   const { user, refetch } = useGlobalContext();
 
-  const handleEditProfile = () => {};
+  const handleEditProfile = () => {
+    router.push(`/edit-profile`);
+  };
 
   const handleLogout = async () => {
     const result = await logout();
@@ -43,7 +46,7 @@ const Profile = () => {
         <View className="flex flex-col items-center mt-10">
           <View className="relative mb-5">
             <Image
-              source={{ uri: user?.avatar }}
+              source={{ uri: user?.avatar, cache: "force-cache" }}
               className="size-44 rounded-full relative"
             />
             <TouchableOpacity

@@ -69,6 +69,16 @@ import {
       return false;
     }
   }
+
+  export async function updateProfile({name}: {name: string}) {
+    try {
+      const result = await account.updateName(name);
+      return result;
+    } catch (error) {
+      console.error(error);
+      return false;
+    }
+  }
   
   export async function logout() {
     try {
