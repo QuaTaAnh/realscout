@@ -70,16 +70,28 @@ import {
     }
   }
 
-  export async function updateProfile({name}: {name: string}) {
+  export async function updateProfile({name, avatar}: {name: string; avatar?: string}) {
     try {
-      const result = await account.updateName(name);
+      let avatarUrl = null;
+
+      if (avatar) {
+        const file = await storage.createFile(config.bucketId || '', "unique()", {
+          name: "avatar",
+          type: "image/jpeg",
+          size: 0,
+          uri: avatar
+        });
+  
+        avatarUrl = storage.getFilePreview(config.bucketId || '', file.$id).href;
+      }
+  
+      const result = await account.updatePrefs({ name, avatar: avatarUrl });
       return result;
     } catch (error) {
       console.error(error);
       return false;
     }
-  }
-  
+  }  
   export async function logout() {
     try {
       const result = await account.deleteSession("current");
@@ -94,7 +106,7 @@ import {
     try {
       const result = await account.get();
       if (result.$id) {
-        const userAvatar = avatar.getInitials(result.name);
+        const userAvatar = result.prefs.avatar || avatar.getInitials(result.name);
   
         return {
           ...result,

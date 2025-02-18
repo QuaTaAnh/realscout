@@ -41,14 +41,13 @@ export const GlobalProvider = ({ children }: GlobalProviderProps) => {
         isLogged,
         user,
         loading,
-        refetch,
+        refetch: () => refetch({}),
       }}
     >
       {children}
     </GlobalContext.Provider>
   );
 };
-
 export const useGlobalContext = (): GlobalContextType => {
   const context = useContext(GlobalContext);
   if (!context)
